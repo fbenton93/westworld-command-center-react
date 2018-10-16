@@ -28,7 +28,8 @@ class App extends Component {
     .then(r => r.json())
     .then(data => {
       this.setState({
-        hosts: data
+        hosts: data,
+        selectedHost: data[0]
       })
     })
   }
