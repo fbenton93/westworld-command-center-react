@@ -2,54 +2,60 @@ import React, { Component } from 'react'
 import { Radio, Icon, Card, Grid, Image, Dropdown, List, Segment, Divider } from 'semantic-ui-react'
 
 
-class HostInfo extends Component{
-  state = {
-    checked: false,
-    value: "Area one",
-    areas: [
-      {key: 'area1', text: 'area1', value: 'Area one'},
-      {key: 'area2', text: 'area2', value: 'Area two'},
-      {key: 'area3', text: 'area3', value: 'Area three'}
+class HostInfo extends Component {
+
+
+
+  handleChange = (event,obj) => {
+    this.props.updateLocation(obj.value,this.props.selectedHost.firstName)
+    console.log(obj.value)
+  }
+
+
+  toggle = (event) => {
+    this.props.toggleStatus(this.props.selectedHost.firstName)
+  }
+
+  render() {
+    const areas = [
+      {key: "high_plains", text: "High Plains", value:"high_plains" },
+      {key: "lowlands", text: "Lowlands", value:"lowlands"},
+      {key: "pariah", text: "Pariah", value: "pariah"},
+      {key: "python_pass", text: "Python Pass", value: "python_pass"},
+      {key: "badlands", text: "Badlands", value:"badlands"}
+
     ]
-    // This state is here to show you how the Info box should work. But it doesn't have to (and probably shouldn't) live here
-    // Plus the areas aren't called area1,2,or 3. That's just a placeholder.
-  }
-
-  handleChange = (e) => {
-    // Your code here
-  }
+    if (this.props.selectedHost.firstName == "Bernard") {
+      areas.push({key: "under_construction", text: "Under Construction", value: "under_construction"})
+    }
 
 
-  toggle = () => {
-    // Your code here
-  }
 
-  render(){
-    const { value, areas } = this.state
-    // A lot of these values are hardcoded.....but they shouldn't be, hint hint....
 
     return (
       <Segment>
         <Grid>
           <Grid.Column width={6}>
-            <Image floated='left' size='small' src='https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/westworld-james.jpg'/>
+            <Image floated='left' size='small' src={this.props.selectedHost.imageUrl} />
           </Grid.Column>
           <Grid.Column width={10}>
             <Card>
               <Card.Content>
                 <Card.Header>
-                  Teddy Flood <Icon name='man' />
+                  {this.props.selectedHost.firstName} {this.props.selectedHost.firstName}
+                  {this.props.selectedHost.gender === 'Male' ? <Icon name='man' /> : <Icon name='woman' />}
                   { /* What should happen when the host isn't a man? Or when his name isn't Teddy? */}
                 </Card.Header>
                 <Card.Meta>
-                  <Radio style={{margin: "10px"}} slider onChange={this.toggle} label={this.state.checked ? "Active" : "Decommissioned"} checked={this.state.checked}/>
+                  <Radio style={{margin: "10px"}} slider onChange={this.toggle} label={this.props.selectedHost.active ? "Active" : "Decommissioned"} />
+
                 </Card.Meta>
 
                 <Divider />
                 Current Area:
                 <Dropdown
                   onChange={this.handleChange}
-                  value={value}
+                  value={this.props.selectedHost.area}
                   selection
                   options={areas} />
 
